@@ -228,6 +228,7 @@
       border:1px solid var(--border); border-radius: 18px; background:#fff; padding: 16px;
     }
     .mini p { color: var(--muted); margin-top: 8px; font-size: 0.94rem; }
+    .shell > .home-button { grid-column: 1 / -1; justify-self: start; margin-bottom: 2px; }
     .home-button {
   display: inline-flex;
   align-items: center;
@@ -258,9 +259,10 @@
       .sidebar { position: relative; top: 0; }
     }
     @media (min-width: 1280px) {
-  .metric-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+      .metric-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
     @media (max-width: 880px) {
       .hero-grid, .call-layout, .call-grid, .summary-grid, .score-row { grid-template-columns: 1fr; }
     }
