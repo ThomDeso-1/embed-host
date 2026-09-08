@@ -452,13 +452,15 @@
     const audioPlayback = document.getElementById('audioPlayback');
 
     recordBtn.addEventListener('click', async () => {
+      recordBtn.disabled = true;
+      statusEl.textContent = 'Requesting microphone access…';
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorder = new MediaRecorder(stream);
         audioChunks = [];
         mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
         mediaRecorder.onstop = () => {
-          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+          const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
           const audioUrl = URL.createObjectURL(audioBlob);
           audioPlayback.src = audioUrl;
           audioPlayback.style.display = 'block';
@@ -466,10 +468,11 @@
           stream.getTracks().forEach(track => track.stop());
         };
         mediaRecorder.start();
-        recordBtn.disabled = true;
         stopBtn.disabled = false;
         statusEl.textContent = 'Recording... aim for 45–60 seconds.';
       } catch (err) {
+        recordBtn.disabled = false;
+        stopBtn.disabled = true;
         statusEl.textContent = 'Microphone access was not available in this browser. The prompt can still be used as a reflective practice activity.';
       }
     });
